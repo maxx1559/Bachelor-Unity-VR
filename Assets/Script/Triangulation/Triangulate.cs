@@ -9,16 +9,22 @@ public class Triangulate
     Hashtable map;
     List<Vector3> vertices;
     List<IPoint> delaunayPoints;
-    List<int> triangles = new List<int>();
-    List<int> sideLengths = new List<int>();
+    List<int> triangles;
+    List<int> sideLengths;
     int medianLength = 4;
     int removedTriangles = -1;
     int removedTriIterations = 0;
 
-    public Triangulate(List<Vector3> v, List<IPoint> p)
+    public Triangulate(List<Vector3> points, List<IPoint> delauneyPoints)
+    /* Checks if there exists enough points to triangulate.
+    
+        Args:
+            points: A list of Vector3 points
+            delauneyPoints: A list of IPoints (points' x and z values)
+    */
     {
-        vertices = v;
-        delaunayPoints = p;
+        vertices = points;
+        delaunayPoints = delauneyPoints;
 
         // If there is less than 3 points in the point cloud, there cant be triangulated
         if (db.getPoints().Count > 3)
@@ -28,10 +34,9 @@ public class Triangulate
 
     }
 
-    /**
-     * Function that computes the delaunay triangulation and generates the mesh from these.
-     */
     void CreateShape()
+    /* Computes Delauney triangulation triangles and generates mesh from these
+    */
     {
         removedTriangles = -1;
         removedTriIterations = 0;
@@ -44,7 +49,7 @@ public class Triangulate
         // GenerateMedianLength();
 
         // Remove edge borders with edge length greater than median length
-        if (db.getEdgeTrianglesRemoved())
+        if (db.getEdgeTrianglesRemovalEnabled())
         {
             while (removedTriangles != 0 || removedTriIterations < 20)
                 RemoveEdgeTriangles();
@@ -65,10 +70,9 @@ public class Triangulate
         db.setTriangles(triangles);
     }
 
-    /**
-     * Compute median length of triangle side
-     */
     public void GenerateMedianLength()
+    /* Computes median length of all triangle sides
+    */
     {
         for (int i = 0; i < triangles.Count; i += 3)
         {
@@ -93,18 +97,24 @@ public class Triangulate
 
     }
 
-    /**
-     * Compute euclidean distance between to vertices
-    */
     public float Norm(Vector3 v1, Vector3 v2)
+    /* Computes the Euclidean distance between to vertices
+    
+       Args:
+            v1: First Vector3 vertice
+            v2: Second Vector3 vertice
+
+       Returns:
+            The Euclidian distance between v1 and v2 as a float
+    */
     {
         return Mathf.Sqrt(Mathf.Pow(v1[0] - v2[0], 2) + Mathf.Pow(v1[1] - v2[1], 2) + Mathf.Pow(v1[2] - v2[2], 2));
     }
 
-    /**
-     * Function that removes edge triangles from triangle index set
-     */
+    
     void RemoveEdgeTriangles()
+    /* Removes edge triangles from the triangle list
+    */
     {
         CreateMap();
         ICollection keys = map.Keys;
@@ -126,6 +136,7 @@ public class Triangulate
                         borderEdge = false;
                         break;
                     }
+
                 }
 
                 // Removing triangle where edge v0-v1 appears and length greater than median
@@ -146,26 +157,21 @@ public class Triangulate
                                         triangles[i] == v2 && triangles[i + 1] == v0 && triangles[i + 2] == v1 ||
                                         triangles[i] == v1 && triangles[i + 1] == v2 && triangles[i + 2] == v0)
                                     {
-                                        triangles.RemoveAt(i);
-                                        triangles.RemoveAt(i);
-                                        triangles.RemoveAt(i);
+                                        triangles.RemoveRange(i, 3);
                                     }
                                 }
                             }
                         }
-
                     }
                 }
             }
         }
         removedTriIterations++;
-        Debug.Log("removed " + removedTriangles + " triangles");
     }
 
-    /**
-     * Function to create new map of edges from current triangles
-     */
     void CreateMap()
+    /* Creates a new map of the edges from the current triangles
+    */
     {
         map = new Hashtable();
 
@@ -185,8 +191,10 @@ public class Triangulate
 
             if (!map.ContainsKey(v0))
                 map.Add(v0, new List<int>());
+
             if (!map.ContainsKey(v1))
                 map.Add(v1, new List<int>());
+
             if (!map.ContainsKey(v2))
                 map.Add(v2, new List<int>());
 
@@ -194,6 +202,7 @@ public class Triangulate
             ((List<int>)map[v1]).Add(v2);
             ((List<int>)map[v2]).Add(v0);
         }
+
     }
 
 }

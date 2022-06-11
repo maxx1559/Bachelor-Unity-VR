@@ -6,8 +6,8 @@ using System.IO;
 
 public class ChooseMenu : MonoBehaviour
 {
-    Controller controller = Controller.getInstance();
     DataBase db = DataBase.getInstance();
+    Controller controller = Controller.getInstance();
 
     public GameObject inputField;
     public Image panel;
@@ -32,12 +32,11 @@ public class ChooseMenu : MonoBehaviour
 
     }
 
-    //Creates a Json file from the .s7k file
     public void RunVisualsWithPath()
+    /* Creates a JSON file from the chosen .s7k file
+    */
     {
         string path = inputField.GetComponent<TMP_InputField>().text;
-        print(path);
-        print(File.Exists(path));
 
         //Check if the file path is valid/exists on the system
         if (File.Exists(path))
@@ -50,13 +49,13 @@ public class ChooseMenu : MonoBehaviour
                 Process p = new Process();
                 p.StartInfo = new ProcessStartInfo();
                 p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-                p.StartInfo.FileName = Application.streamingAssetsPath + @"/CreateJSON.exe";
+                p.StartInfo.FileName = Application.streamingAssetsPath + @"/DataExtractor.exe";
                 p.StartInfo.WorkingDirectory = Application.streamingAssetsPath;
                 p.StartInfo.Arguments = @"""" + path + @"""";
                 p.Start();
                 p.WaitForExit();
 
-                controller.setPath(Application.streamingAssetsPath + @"/7k_data_extracted_rotated.json");
+                controller.setPath(Application.streamingAssetsPath + @"/point_cloud_data.json");
 
                 controller.LoadController();
                 chooseMenu.SetActive(false);
@@ -76,14 +75,16 @@ public class ChooseMenu : MonoBehaviour
 
     }
 
-    //Changes the background to a new image (only used for when we switch to TemplateMenu)
     public void changeBackground()
+    /* Changes the background to a new image, only used for when switching to the template menu
+    */
     {
         panel.sprite = sprite;
     }
 
-    //Quits the program
     public void quitButton()
+    /* Quits the program
+    */
     {
         Application.Quit();
     }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -24,7 +22,6 @@ public class PointCloudRenderer : MonoBehaviour
 
     private void Start()
     {
-
         int finalShallowDepth = db.getNewShallowDepth();
         int finalDeepDepth = db.getNewDeepDepth();
 
@@ -51,11 +48,13 @@ public class PointCloudRenderer : MonoBehaviour
             SetParticles(positions, db.getPointCloudGradient() ? colorsGradient : colors);
             db.setUpdatePointSize(false);
         }
+
         if(db.getUpdatePointColor())
         {
             SetParticles(positions, db.getPointCloudGradient() ? colorsGradient : colors);
             db.setUpdatePointColor(false);
         }
+
         if (toUpdate)
         {
             toUpdate = false;
@@ -106,6 +105,7 @@ public class PointCloudRenderer : MonoBehaviour
                 var data = new Color(positions[index].x, positions[index].y, positions[index].z, particleSize);
                 texPosScale.SetPixel(x, y, data);
             }
+
         }
 
         texColor.Apply();
@@ -113,4 +113,5 @@ public class PointCloudRenderer : MonoBehaviour
         particleCount = (uint)positions.Length;
         toUpdate = true;
     }
+
 }

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -17,11 +15,11 @@ public class PointSizeControls : MonoBehaviour, IPointerUpHandler
         slider = GetComponent<Slider>();
         pointSizeText = GameObject.Find("pointSize").GetComponent<Text>();
 
-        slider.onValueChanged.AddListener(delegate { valueChangeCheck(); });
+        slider.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
         prevVal = slider.value;
     }
 
-    void valueChangeCheck()
+    void ValueChangeCheck()
     {
         pointSizeText.text = "Point Size: " + Math.Round((Decimal)slider.value, 2);
     }
@@ -35,5 +33,7 @@ public class PointSizeControls : MonoBehaviour, IPointerUpHandler
             db.setParticleSize(prevVal);
 
         }
+
     }
+
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,28 +5,46 @@ public class PointColorControls : MonoBehaviour
 {
     DataBase db = DataBase.getInstance();
 
-    Toggle toggle;
+    Toggle togglePointHeightmap;
     public GameObject scale;
     public Toggle toggleHeightMap;
 
     void Start()
     {
-        toggle = GetComponent<Toggle>();
-        toggle.onValueChanged.AddListener(delegate { valueChangeCheck(); });
-        scale.SetActive(toggle.isOn);
+        togglePointHeightmap = GetComponent<Toggle>();
+        togglePointHeightmap.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
+        scale.SetActive(togglePointHeightmap.isOn);
     }
 
-    private void valueChangeCheck()
+    private void ValueChangeCheck()
     {
-        db.setPointCloudGradient(toggle.isOn);
+        db.setPointCloudGradient(togglePointHeightmap.isOn);
         db.setUpdatePointColor(true);
-        if (toggleHeightMap.isOn)
+    }
+
+    
+    void Update()
+    // Checking toggles for the appearence of the height scale.
+    {
+        if (db.getShowHeightMap())
         {
             scale.SetActive(true);
         }
+        else if (db.getShowPointCloud())
+        {
+            if (db.getPointCloudGradient())
+            {
+                scale.SetActive(true);
+            }
+            else
+            {
+                scale.SetActive(false);
+            }
+
+        }
         else
         {
-            scale.SetActive(toggle.isOn);
+            scale.SetActive(false);
         }
 
     }

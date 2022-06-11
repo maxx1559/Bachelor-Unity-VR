@@ -1,14 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
 using DelaunatorSharp;
 
 public class DataBase
 {
     public static DataBase db = new DataBase();
 
-    //Setting initial variables 
+    //Setting all initial variables 
 
     //Values from sonar data
     private int numberOfPings = 0;
@@ -45,7 +43,7 @@ public class DataBase
 
     //Values for check boxes in options
     private bool triangulationEnabled = false;
-    private bool edgeTrianglesRemoved = false;
+    private bool edgeTrianglesRemovalEnabled = false;
     private bool nearestNeighboursEnabled = false;
     private bool outlierHeightEnabled = false;
 
@@ -55,13 +53,20 @@ public class DataBase
     //Values for textfields in options
     private int numberOfNeighbours = 20;
     private double neighbourDistance = 1.5;
-    private double outlierHeigthThreshold = 1.0;
+    private double outlierHeigthThreshold = 3.0;
+
+    //Default values for textfields, used when picking a template s7k file
+    private int defaultNumberOfNeighbours = 20;
+    private double defaultNeighbourDistance = 1.5;
+    private double defaultOutlierHeigthThreshold = 3.0;
 
     //Values for controls in pointcloud scene
     private bool showMesh = false;
     private bool heightMapEnabled = false;
     private bool showHeightMap = false;
     private bool showPointCloud = true;
+    private bool showBoatPathPoints = false;
+    private bool lightLocked = true;
     private float particleSize = 0.05f;
 
     // Variables set if game object should update
@@ -71,7 +76,14 @@ public class DataBase
     private bool updatePointSize = false;
     private bool pointCloudGradient = false;
     private bool updatePointColor = false;
+    private bool updateBoatPath = false;
     private bool fromPoints = false;
+
+    // Variables for position of object to show scaling in pointcloud
+    private Vector3 initialPos;
+
+    // Center point of point cloud
+    private Vector3 centerPoint;
 
     private DataBase() {}
     public static DataBase getInstance()
@@ -199,6 +211,18 @@ public class DataBase
     {
         outlierHeigthThreshold = newOutlierThreshold;
     }
+    public void setDefaultNumberOfNeighbours(int newDefaultNoOfNeighbours)
+    {
+        defaultNumberOfNeighbours = newDefaultNoOfNeighbours;
+    }
+    public void setDefaultNeighbourDistance(double newDefaultNeighbourDist)
+    {
+        defaultNeighbourDistance = newDefaultNeighbourDist;
+    }
+    public void setDefaultOutlierHeightThreshold(double newDefaultOutlierThreshold)
+    {
+        defaultOutlierHeigthThreshold = newDefaultOutlierThreshold;
+    }
     public void setShowMesh(bool newShowMesh)
     {
         showMesh = newShowMesh;
@@ -211,9 +235,9 @@ public class DataBase
     {
         triangulationType = newTriangulationType;
     }
-    public void setEdgeTrianglesRemoved(bool newEdgeTrianglesRemoved)
+    public void setEdgeTrianglesRemovalEnabled(bool newEdgeTrianglesRemovalEnabled)
     {
-        edgeTrianglesRemoved = newEdgeTrianglesRemoved;
+        edgeTrianglesRemovalEnabled = newEdgeTrianglesRemovalEnabled;
     }
     public void setHeightMapEnabled(bool newHeightMapEnabled)
     {
@@ -226,6 +250,14 @@ public class DataBase
     public void setShowPointCloud(bool newShowPointCloud)
     {
         showPointCloud = newShowPointCloud;
+    }
+    public void setShowBoatPathPoints(bool newShowBoatPathPoints)
+    {
+        showBoatPathPoints = newShowBoatPathPoints;
+    }
+    public void setLightLocked(bool newLightLocked)
+    {
+        lightLocked = newLightLocked;
     }
     public void setUpdateHeightMap(bool newUpdateHeightMap)
     {
@@ -242,6 +274,10 @@ public class DataBase
     public void setUpdatePointSize(bool newUpdatePointSize)
     {
         updatePointSize = newUpdatePointSize;
+    }
+    public void setUpdateBoatPath(bool newUpdateBoatPath)
+    {
+        updateBoatPath = newUpdateBoatPath;
     }
     public void setParticleSize(float newParticleSize)
     {
@@ -260,6 +296,14 @@ public class DataBase
         fromPoints = newFromPoints;
     }
 
+    public void setInitialPos(Vector3 newPos)
+    {
+        initialPos = newPos;
+    }
+    public void setCenterPoint(Vector3 newCenterPoint)
+    {
+        centerPoint = newCenterPoint;
+    }
 
     //Get variables methods
     public int getNumberOfPings()
@@ -382,6 +426,18 @@ public class DataBase
     {
         return outlierHeigthThreshold;
     }
+    public int getDefaultNumberOfNeighbours()
+    {
+        return defaultNumberOfNeighbours;
+    }
+    public double getDefaultNeighbourDistance()
+    {
+        return defaultNeighbourDistance;
+    }
+    public double getDefaultOutlierHeightThreshold()
+    {
+        return defaultOutlierHeigthThreshold;
+    }
     public bool getShowMesh()
     {
         return showMesh;
@@ -394,9 +450,9 @@ public class DataBase
     {
         return triangulationType;
     }
-    public bool getEdgeTrianglesRemoved()
+    public bool getEdgeTrianglesRemovalEnabled()
     {
-        return edgeTrianglesRemoved;
+        return edgeTrianglesRemovalEnabled;
     }
     public bool getHeightMapEnabled()
     {
@@ -410,7 +466,14 @@ public class DataBase
     {
         return showPointCloud;
     }
-
+    public bool getShowBoatPathPoints()
+    {
+        return showBoatPathPoints;
+    }
+    public bool getLightLocked()
+    {
+        return lightLocked;
+    }
     public bool getUpdateHeightMap()
     {
         return updateHeightMap;
@@ -427,7 +490,10 @@ public class DataBase
     {
         return updatePointSize;
     }
-
+    public bool getUpdateBoatPath()
+    {
+        return updateBoatPath;
+    }
     public float getParticleSize()
     {
         return particleSize;
@@ -443,6 +509,14 @@ public class DataBase
     public bool getFromPoints()
     {
         return fromPoints;
+    }
+    public Vector3 getInitialPos()
+    {
+        return initialPos;
+    }
+    public Vector3 getCenterPoint()
+    {
+        return centerPoint;
     }
 
 }

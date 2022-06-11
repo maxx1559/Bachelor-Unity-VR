@@ -17,11 +17,10 @@ public class GenerateHeightmap : MonoBehaviour
     public Gradient gradient;
     bool hasRun = false;
 
-
     private void Update()
     {
 
-        if (db.getTriangulationEnabled() && !hasRun)
+        if (db.getTriangulationEnabled() && !hasRun && db.getPoints().Count > 2)
         {
             Mesh mesh = controller.mesh;
             if (colors.Count == 0)
@@ -34,8 +33,8 @@ public class GenerateHeightmap : MonoBehaviour
                 {
                     float height = Mathf.InverseLerp(finalDeepDepth, finalShallowDepth, p[1]);
                     colors.Add(gradient.Evaluate(height));
-
                 }
+
             }
 
             mesh.colors = colors.ToArray();
@@ -43,6 +42,7 @@ public class GenerateHeightmap : MonoBehaviour
             GetComponent<MeshFilter>().mesh = controller.mesh;
             hasRun = true;
         }
+
         else if (db.getUpdateHeightMap() && db.getShowHeightMap())
         {
             this.gameObject.GetComponent<Renderer>().enabled = true;
@@ -51,5 +51,7 @@ public class GenerateHeightmap : MonoBehaviour
         {
             this.gameObject.GetComponent<Renderer>().enabled = false;
         }
+
     }
+
 }

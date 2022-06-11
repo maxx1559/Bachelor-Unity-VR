@@ -1,28 +1,35 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PointCloudControls : MonoBehaviour
 {
     DataBase db = DataBase.getInstance();
-    Toggle toggle;
+    
+    public GameObject scale;
+    Toggle displayToggle;
+    public Toggle toggleGradient;
+    public Toggle toggleHeightmap;
+
 
     void Start()
     {
-        toggle = GetComponent<Toggle>();
-        toggle.onValueChanged.AddListener(delegate { valueChangeCheck(); });
+        displayToggle = GetComponent<Toggle>();
+        displayToggle.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
     }
 
-    private void valueChangeCheck()
+    private void ValueChangeCheck()
     {
-        db.setShowPointCloud(toggle.isOn);
+        db.setShowPointCloud(displayToggle.isOn);
         db.setUpdatePointCloud(true);
+
+        if(!displayToggle.isOn)
+        {
+            toggleGradient.interactable = false;
+        } else
+        {
+            toggleGradient.interactable = true;
+        }
+
     }
 
-    void Update()
-    {
-        
-    }
 }

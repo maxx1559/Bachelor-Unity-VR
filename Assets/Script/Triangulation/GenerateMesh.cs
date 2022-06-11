@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DelaunatorSharp;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -18,13 +17,16 @@ public class GenerateMesh : MonoBehaviour
     private void Start()
     {
 
-        if (db.getTriangulationEnabled())
+        if (db.getTriangulationEnabled() && db.getPoints().Count > 2)
         {
             Mesh mesh = new Mesh();
 
             controller.mesh = mesh;
 
-            Triangulate();
+            if (t == null)
+            {
+                t = new Triangulate(db.getPoints(), db.getPointsDelauney());
+            }
 
             mesh.Clear();
             mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
@@ -37,13 +39,7 @@ public class GenerateMesh : MonoBehaviour
             mesh.RecalculateBounds();
             GetComponent<MeshFilter>().mesh = controller.mesh;
         }
-    }
 
-    public void Triangulate()
-    {
-        Debug.Log("GenerateMesh calls triangulate");
-        if (t == null)
-            t = new Triangulate(db.getPoints(), db.getPointsDelauney());
     }
 
     private void Update()
@@ -51,9 +47,12 @@ public class GenerateMesh : MonoBehaviour
         if (db.getUpdateOceanFloor() && db.getShowMesh()) {
             this.gameObject.GetComponent<Renderer>().enabled = true;
             db.setUpdateOceanFloor(false);
+
         } else if (db.getUpdateOceanFloor() && !db.getShowMesh()) {
             this.gameObject.GetComponent<Renderer>().enabled = false;
             db.setUpdateOceanFloor(false);
         }
+
     }
+
 }
