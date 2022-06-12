@@ -9,8 +9,7 @@ public class HandPresence : MonoBehaviour
     public InputDeviceCharacteristics controllerCharacteristics;
     public List<GameObject> controllerPrefabs;
     private InputDevice targetDevice;
-    private GameObject spawnedController;
-
+    GameObject spawnedController;
     // Start is called before the first frame update
     void Start()
     {

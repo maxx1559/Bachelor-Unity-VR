@@ -541,7 +541,7 @@ MonoBehaviour:
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 1752818289709888422, guid: 523d833b1f3111f478c5ce9f3bd3cdcc, type: 3}
+  m_ModelPrefab: {fileID: 108325808751205561, guid: cfa8dc06d611ba340b06bbefba58ee46, type: 3}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
@@ -2461,7 +2461,7 @@ MonoBehaviour:
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 1808219016682255206, guid: 3ff73f4439b12eb47a2320001d5f0e4c, type: 3}
+  m_ModelPrefab: {fileID: 914719734005754760, guid: c836783e3928a624e9ff9c70d4f21606, type: 3}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
@@ -5026,6 +5026,7 @@ GameObject:
   - component: {fileID: 849772244308415194}
   - component: {fileID: 849772244308415195}
   - component: {fileID: 849772244308415192}
+  - component: {fileID: 849772244308415191}
   m_Layer: 5
   m_Name: NeighbourAmountField
   m_TagString: Untagged
@@ -5033,6 +5034,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &849772244308415191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 849772244308415190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c450e6753e99bc347b304a2e6305dcff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &849772244308415192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5100,7 +5113,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnSelect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 849772244308415191}
+        m_TargetAssemblyTypeName: OpenKeyboard, Assembly-CSharp
+        m_MethodName: openKeyboard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnDeselect:
     m_PersistentCalls:
       m_Calls: []
